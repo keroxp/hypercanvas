@@ -42,10 +42,19 @@ export type DrawFunction<T = DisplayProps> = (self: CanvasNode<T>, ctx: CanvasRe
 export class DisplayObjectImpl<T> implements CanvasNode<T> {
   constructor(
     public attributes: T,
-    public children: (CanvasView | CanvasNode)[] = []
+    children: (CanvasChild|CanvasChild[])[] = []
   ) {
+    const _children = [];
+    for (const i of children) {
+      if (Array.isArray(i)) {
+        _children.push(...i)
+      } else {
+        _children.push(i)
+      }
+    }
+    this.children = _children;
   }
-
+  children: CanvasChild[];
   bounds: Rect = {
     x: 0, y: 0, width: 0, height: 0
   };
@@ -92,6 +101,7 @@ export class DisplayObjectImpl<T> implements CanvasNode<T> {
   }
 
   applyDisplayProps(p: Partial<DisplayProps>) {
+    if (!p) return;
     const nump = [
       "x", "y", "scaleX", "scaleY", "skewX", "skewY", "rotation", "pivotX", "pivotY"
     ];

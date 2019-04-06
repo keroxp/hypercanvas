@@ -39,30 +39,15 @@ const view = (state, actions) => {
     }
   };
   return (
-    h(Shape, {}, [
-        h(Shape, {
-          x: 250, y: 250, draw: draw
-        }, [
-          h(Shape, {
-            rotation: Math.PI / 4,
-            draw: drawTriangle
-          }),
-          h(Shape, {
-            x: 100,
-            y: 100,
-          }, [
-            h(Shape, {
-              draw: drawGradientArc
-            })
-          ]),
-        ])
-      ,
-      h(Bitmap, {
-        image: "/keroxp.png",
-        width: 100,
-        height:100,
-      })]
-    )
+    <Shape>
+      <Shape x={250} y={250} draw={draw}>
+        <Shape rotation={Math.PI / 4} draw={drawTriangle}/>
+        <Shape x={100} y={100}>
+          <Shape draw={drawGradientArc}/>
+        </Shape>
+      </Shape>
+      <Bitmap image={"/keroxp.png"} width={100} height={100}/>
+    </Shape>
   )
 };
 

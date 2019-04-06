@@ -3,10 +3,12 @@ import {DisplayObjectImpl, DisplayProps, DrawFunction} from "./display";
 
 export const Shape: CanvasComponent<Partial<DisplayProps> & {
   draw?: DrawFunction
-}> = (attributes, children) =>  {
+}> = (attributes = {}, children = []) =>  {
   const d = new DisplayObjectImpl(attributes, children);
-  d.applyDisplayProps(attributes);
-  d.draw = attributes.draw;
+  if (attributes) {
+    d.applyDisplayProps(attributes);
+    d.draw = attributes.draw;
+  }
   return d;
 };
 
