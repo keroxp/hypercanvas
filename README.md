@@ -1,57 +1,46 @@
 # hypercanvas
 A reactive framework to build declarative canvas application
 
+**NOTE: STILL WIP**
+
+## Motivations
+
+- want to build canvas application by declarative way
+- want to use JSX
+- want to make it reactive
+- love [easeljs](https://www.createjs.com/easeljs) and [hyperapp](https://github.com/jorgebucaran/hyperapp)
+
 ## Example
 
 ```jsx
-import {app, h, Bitmap, Shape} from "hypercanvas";
+import {app, h, Stage, Bitmap, Text, Shape} from "hypercanvas";
 
 const canvas = document.getElementById("canvas");
-let frame = 0;
 const view = (state, actions) => {
-  const draw = (self1, ctx) => {
+  const drawRect = (elem, ctx) => {
     ctx.beginPath();
     ctx.fillStyle = "#f00";
     ctx.rect(-50, -50, 100, 100);
     ctx.fill();
+  };
+  const drawCircle = (elem, ctx) => {
+    ctx.beginPath();
     ctx.lineWidth = 2;
     ctx.strokeStyle = "#0f0";
-    ctx.strokeRect(-40, -40, 80, 80);
+    ctx.arc(0, 0, 50, 0, Math.PI*2, true);
     ctx.closePath();
     ctx.stroke()
-  };
-  const drawTriangle = (self1, ctx) => {
-    ctx.beginPath();
-    ctx.strokeStyle = "#000";
-    ctx.lineWidth = 2;
-    ctx.setLineDash([3, 2]);
-    ctx.rect(-25, -25, 50, 50);
-    ctx.closePath();
-    ctx.stroke();
-  };
-  const drawGradientArc = (self1, ctx) => {
-    ctx.beginPath();
-    const c = frame.toString(16);
-    ctx.clearRect(-50, -50, 100, 100);
-    ctx.fillStyle = `#${c}${c}${c}`;
-    ctx.arc(0, 0, 50, 0, Math.PI * 2, true);
-    ctx.closePath();
-    ctx.fill();
-    frame++;
-    if (frame > 255) {
-      frame = 0;
-    }
-  };
+  }
   return (
-    <Shape>
-      <Shape x={250} y={250} draw={draw}>
-        <Shape rotation={Math.PI / 4} draw={drawTriangle}/>
+    <Stage>
+      <Shape x={250} y={250} draw={drawRect}>
         <Shape x={100} y={100}>
-          <Shape draw={drawGradientArc}/>
+          <Shape draw={drawCircle}/>
         </Shape>
       </Shape>
+      <Text text="Hello World!" fontSize="12pt" fontFamily="Arial" />
       <Bitmap image={"/keroxp.png"} width={100} height={100}/>
-    </Shape>
+    </Stage>
   )
 };
 
