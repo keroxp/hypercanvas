@@ -1,6 +1,6 @@
 {
   "name": "hypercanvas",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0-alpha2",
   "main": "dist/mod.js",
   "browser": "dist/browser.js",
   "scripts": {
