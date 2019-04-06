@@ -1,4 +1,7 @@
 # hypercanvas
+
+[![npm](https://img.shields.io/npm/v/hypercanvas.svg)](https://www.npmjs.org/package/hypercanvas)
+
 A reactive framework to build declarative canvas application
 
 **NOTE: STILL WIP**
@@ -9,6 +12,12 @@ A reactive framework to build declarative canvas application
 - want to use JSX
 - want to make it reactive
 - love [easeljs](https://www.createjs.com/easeljs) and [hyperapp](https://github.com/jorgebucaran/hyperapp)
+
+## TODO
+
+- virtual dom patching
+- state and actions
+- tick system that coexists reactive state
 
 ## Example
 
@@ -50,3 +59,7 @@ setInterval(() => {
   stage.render(ctx)
 }, 16);
 ```
+## LICENSE
+
+MIT
+
