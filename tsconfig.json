@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2015",
+    "declaration": true,
     "jsx": "react",
     "jsxFactory": "h",
     "module": "esnext",
@@ -11,6 +12,7 @@
     "outDir": "dist"
   },
   "include": [
+    "mod.ts",
     "example/**/**.ts",
     "example/**/**.tsx",
     "src/**/*.ts",

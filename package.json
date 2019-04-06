@@ -1,17 +1,22 @@
 {
-  "devDependencies": {
-    "parcel-bundler": "^1.12.3",
-    "parcel-plugin-static-files-copy": "^2.0.0",
-    "typescript": "^3.4.1"
-  },
   "name": "hypercanvas",
-  "version": "0.1.0",
-  "main": "index.js",
+  "version": "0.1.0-alpha",
+  "main": "dist/mod.js",
+  "browser": "dist/browser.js",
+  "scripts": {
+    "dev": "parcel example/index.html --out-dir .parcel"
+  },
   "staticFiles": {
     "staticPath": "public",
     "watcherGlob": "**"
   },
   "repository": "https://github.com/keroxp/hypercanvas",
   "author": "keroxp <kerokerokerop@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-static-files-copy": "^2.0.0",
+    "rollup": "^1.9.0",
+    "typescript": "^3.4.1"
+  }
 }

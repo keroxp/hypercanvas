@@ -1,0 +1,8 @@
+public
+example
+.idea
+.cache
+.parcel
+tsconfig.json
+Makefile
+.editorconfig

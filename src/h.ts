@@ -1,4 +1,4 @@
-import {CanvasNode, DisplayProps} from "./display";
+import {CanvasNode} from "./display";
 
 export type CanvasChild = CanvasNode | CanvasView;
 export type CanvasView<S = {}, A = {}> = (state: S, actions: A) => CanvasNode

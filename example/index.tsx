@@ -1,8 +1,10 @@
 import {DrawFunction} from "../src/display";
 import {app, h} from "../src/h";
-import {Bitmap, Shape} from "../src/components";
+import {Bitmap, Shape, Stage, Text} from "../src/components";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+// canvas.width *= window.devicePixelRatio;
+// canvas.height *= window.devicePixelRatio;
 let frame = 0;
 const view = (state, actions) => {
   const draw: DrawFunction = (self1, ctx) => {
@@ -39,15 +41,16 @@ const view = (state, actions) => {
     }
   };
   return (
-    <Shape>
+    <Stage>
       <Shape x={250} y={250} draw={draw}>
         <Shape rotation={Math.PI / 4} draw={drawTriangle}/>
         <Shape x={100} y={100}>
           <Shape draw={drawGradientArc}/>
         </Shape>
+        <Text x={-100} y={-100} text={"hypercanvas"} fontFamily={"arial"} fontStyle={"normal"} fontSize={"20pt"} />
       </Shape>
       <Bitmap image={"/keroxp.png"} width={100} height={100}/>
-    </Shape>
+    </Stage>
   )
 };
 

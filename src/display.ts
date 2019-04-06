@@ -2,17 +2,17 @@ import {Matrix2D, Rect} from "./geometry";
 import {CanvasChild, CanvasComponent, CanvasView} from "./h";
 
 export type DisplayProps = {
-  x: number,
-  y: number,
-  scaleX: number,
-  scaleY: number,
-  skewX: number,
-  skewY: number,
-  rotation: number
-  pivotX: number;
-  pivotY: number;
-  bounds: Rect;
-  mtx: Matrix2D;
+  x?: number,
+  y?: number,
+  scaleX?: number,
+  scaleY?: number,
+  skewX?: number,
+  skewY?: number,
+  rotation?: number
+  pivotX?: number;
+  pivotY?: number;
+  bounds?: Rect;
+  mtx?: Matrix2D;
 }
 
 export interface CanvasNode<Attributes = {}> extends DisplayProps {
@@ -100,7 +100,7 @@ export class DisplayObjectImpl<T> implements CanvasNode<T> {
     return m;
   }
 
-  applyDisplayProps(p: Partial<DisplayProps>) {
+  setDisplayProps(p: DisplayProps) {
     if (!p) return;
     const nump = [
       "x", "y", "scaleX", "scaleY", "skewX", "skewY", "rotation", "pivotX", "pivotY"
