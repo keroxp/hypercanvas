@@ -117,7 +117,7 @@ export class Matrix2D {
     ]
   }
 
-  decompose(tgt?: Partial<GeometricProps>): GeometricProps {
+  decompose(tgt?: GeometricProps): GeometricProps {
     tgt = tgt || {x: 0, y: 0, skewX: 0, skewY: 0, scaleX: 0, scaleY: 0};
     [tgt.x, tgt.y] = this.cross(tgt.x, tgt.y);
     tgt.scaleX = this.a;

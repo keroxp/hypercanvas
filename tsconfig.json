@@ -8,6 +8,8 @@
     "outDir": "dist"
   },
   "include": [
+    "example/**/**.ts",
+    "example/**/**.tsx",
     "src/**/*.ts",
     "src/**/*.tsx"
   ]

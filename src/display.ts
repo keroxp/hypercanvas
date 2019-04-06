@@ -1,5 +1,5 @@
 import {Matrix2D, Rect} from "./geometry";
-import {CanvasComponent} from "./h";
+import {CanvasComponent, CanvasView} from "./h";
 
 export type GeometricProps = {
   x: number,
@@ -18,18 +18,12 @@ export type DisplayProps = GeometricProps & {
   mtx: Matrix2D;
 }
 
-export const Shape: CanvasComponent<DisplayProps & {
-  draw: DrawFunction
-}> = (attributes, children) =>  {
-  const d = new DisplayObjectImpl(attributes, children);
-  d.draw = attributes.draw;
-  return d;
-};
-
 export interface CanvasNode<Attributes = {}> extends DisplayProps {
   parent?: CanvasNode
   attributes: Attributes;
-  children: CanvasNode[]
+  children: (CanvasView|CanvasNode)[]
+
+  bounds: Rect
 
   appendChild(child: CanvasNode, idx?: number)
 
@@ -44,10 +38,10 @@ export interface CanvasNode<Attributes = {}> extends DisplayProps {
 
 export type DrawFunction<T = DisplayProps> = (self: CanvasNode<T>, ctx: CanvasRenderingContext2D) => void;
 
-class DisplayObjectImpl<T> implements CanvasNode<T> {
+export class DisplayObjectImpl<T> implements CanvasNode<T> {
   constructor(
     public attributes: T,
-    public children: CanvasNode[] = []
+    public children: (CanvasView|CanvasNode)[] = []
   ) {
     for (const key in attributes) {
       this[key] = attributes[key];
@@ -119,12 +113,17 @@ class DisplayObjectImpl<T> implements CanvasNode<T> {
   }
 
   render(ctx: CanvasRenderingContext2D) {
-    console.log("render");
     ctx.save();
     ctx.transform(this.mtx.a, this.mtx.b, this.mtx.c, this.mtx.d, this.mtx.e, this.mtx.f);
-    this.draw(this, ctx);
+    if (this.draw) {
+      this.draw(this, ctx);
+    }
     for (const child of this.children) {
-      child.render(ctx)
+      if (typeof child === "function") {
+        child(0,0).render(ctx);
+      } else {
+        child.render(ctx)
+      }
     }
     ctx.restore();
   };

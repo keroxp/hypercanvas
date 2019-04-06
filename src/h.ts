@@ -1,4 +1,4 @@
-import {CanvasNode, DrawFunction, Shape} from "./display";
+import {CanvasNode, DrawFunction} from "./display";
 
 export type CanvasView<S = {}, A = {}> = (state: S, actions: A) => CanvasNode
 export type CanvasComponent<Attributes = {}, State = {}, Actions = {}> = (
@@ -12,6 +12,7 @@ export function app<S = {}, A = {}>(
   const ctx = canvas.getContext("2d");
   const root = view(state, acitons);
   root.render(ctx);
+  return root;
 }
 
 export function h<T>(
