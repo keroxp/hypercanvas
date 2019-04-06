@@ -30,7 +30,7 @@ const view = (state, actions) => {
     const c = frame.toString(16);
     ctx.clearRect(-50, -50, 100, 100);
     ctx.fillStyle = `#${c}${c}${c}`;
-    ctx.arc(0,0, 50, 0 , Math.PI*2, true);
+    ctx.arc(0, 0, 50, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.fill();
     frame++;
@@ -39,25 +39,30 @@ const view = (state, actions) => {
     }
   };
   return (
-    h(Shape, {
-      x: 250, y: 250, draw: draw
-    }, [
-      h(Shape, {
-        rotation: Math.PI /4,
-        draw: drawTriangle
-      }),
-      h(Shape, {
-        x: 100,
-        y: 100,
-      }, [
+    h(Shape, {}, [
         h(Shape, {
-          draw: drawGradientArc
-        })
-      ]),
+          x: 250, y: 250, draw: draw
+        }, [
+          h(Shape, {
+            rotation: Math.PI / 4,
+            draw: drawTriangle
+          }),
+          h(Shape, {
+            x: 100,
+            y: 100,
+          }, [
+            h(Shape, {
+              draw: drawGradientArc
+            })
+          ]),
+        ])
+      ,
       h(Bitmap, {
-        image: "example/mandrill.png"
-      })
-    ])
+        image: "/keroxp.png",
+        width: 100,
+        height:100,
+      })]
+    )
   )
 };
 

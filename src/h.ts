@@ -1,8 +1,10 @@
-import {CanvasNode, DrawFunction} from "./display";
+import {CanvasNode, DisplayProps} from "./display";
 
+export type CanvasChild = CanvasNode | CanvasView;
 export type CanvasView<S = {}, A = {}> = (state: S, actions: A) => CanvasNode
 export type CanvasComponent<Attributes = {}, State = {}, Actions = {}> = (
-  attributes: Attributes, children: (CanvasNode|CanvasView)[]) => CanvasNode<Attributes> | CanvasView<State, Actions>
+  attributes: Attributes, children: CanvasChild[]
+) => CanvasNode<Attributes>
 
 export function app<S = {}, A = {}>(
   state: S,
@@ -18,7 +20,7 @@ export function app<S = {}, A = {}>(
 export function h<T>(
   component: CanvasComponent<T>,
   attributes: T,
-  children: (CanvasNode|CanvasView)[] = []
-): CanvasNode<T> | CanvasView {
+  children: CanvasChild[] = []
+): CanvasNode<T> {
   return component(attributes, children)
 }

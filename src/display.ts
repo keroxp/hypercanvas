@@ -1,16 +1,13 @@
 import {Matrix2D, Rect} from "./geometry";
-import {CanvasComponent, CanvasView} from "./h";
+import {CanvasChild, CanvasComponent, CanvasView} from "./h";
 
-export type GeometricProps = {
+export type DisplayProps = {
   x: number,
   y: number,
   scaleX: number,
   scaleY: number,
   skewX: number,
   skewY: number,
-}
-
-export type DisplayProps = GeometricProps & {
   rotation: number
   pivotX: number;
   pivotY: number;
@@ -21,9 +18,13 @@ export type DisplayProps = GeometricProps & {
 export interface CanvasNode<Attributes = {}> extends DisplayProps {
   parent?: CanvasNode
   attributes: Attributes;
-  children: (CanvasView|CanvasNode)[]
+  children: CanvasChild[]
 
   bounds: Rect
+
+  setBounds(rect: Rect)
+
+  setBounds(x: number, y: number, width: number, height: number)
 
   appendChild(child: CanvasNode, idx?: number)
 
@@ -41,18 +42,32 @@ export type DrawFunction<T = DisplayProps> = (self: CanvasNode<T>, ctx: CanvasRe
 export class DisplayObjectImpl<T> implements CanvasNode<T> {
   constructor(
     public attributes: T,
-    public children: (CanvasView|CanvasNode)[] = []
+    public children: (CanvasView | CanvasNode)[] = []
   ) {
-    for (const key in attributes) {
-      this[key] = attributes[key];
-    }
   }
 
-  bounds: Rect;
+  bounds: Rect = {
+    x: 0, y: 0, width: 0, height: 0
+  };
+
+  setBounds(xOrRect: number | Rect, y: number = 0, width: number = 0, height: number = 0) {
+    if (typeof xOrRect === "number") {
+      this.bounds = {
+        x: xOrRect, y, width, height
+      }
+    } else {
+      const {x,y,width,height} = xOrRect;
+      this.bounds ={x,y,width,height}
+    }
+  }
 
   private _mtx: Matrix2D = new Matrix2D();
   get mtx(): Matrix2D {
     return this.applyTransform();
+  }
+
+  set mtx(val: Matrix2D) {
+    this._mtx = val;
   }
 
   parent: CanvasNode;
@@ -74,6 +89,23 @@ export class DisplayObjectImpl<T> implements CanvasNode<T> {
       m.prependMatrix(n.mtx)
     }
     return m;
+  }
+
+  applyDisplayProps(p: Partial<DisplayProps>) {
+    const nump = [
+      "x", "y", "scaleX", "scaleY", "skewX", "skewY", "rotation", "pivotX", "pivotY"
+    ];
+    for (const key of nump) {
+      if (typeof p[key] === "number") {
+        this[key] = p[key]
+      }
+    }
+    if (p.bounds) {
+      this.setBounds(p.bounds)
+    }
+    if (p.mtx) {
+      this.mtx.setMatrix(p.mtx)
+    }
   }
 
   applyTransform() {
@@ -114,13 +146,14 @@ export class DisplayObjectImpl<T> implements CanvasNode<T> {
 
   render(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.transform(this.mtx.a, this.mtx.b, this.mtx.c, this.mtx.d, this.mtx.e, this.mtx.f);
+    this.applyTransform();
+    ctx.transform(this._mtx.a, this._mtx.b, this._mtx.c, this._mtx.d, this._mtx.e, this._mtx.f);
     if (this.draw) {
       this.draw(this, ctx);
     }
     for (const child of this.children) {
       if (typeof child === "function") {
-        child(0,0).render(ctx);
+        child(0, 0).render(ctx);
       } else {
         child.render(ctx)
       }

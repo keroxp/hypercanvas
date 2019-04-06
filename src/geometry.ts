@@ -1,4 +1,4 @@
-import {GeometricProps} from "./display";
+import {DisplayProps} from "./display";
 
 export type Point = {
   x: number,
@@ -8,6 +8,7 @@ export type Size = {
   width: number,
   height: number
 }
+
 export type Rect = Point & Size;
 
 export class Matrix2D {
@@ -48,6 +49,12 @@ export class Matrix2D {
     this.e = e;
     this.f = f;
     return this;
+  }
+
+  setMatrix(mtx: Matrix2D): Matrix2D {
+    return this.set(
+      mtx.a, mtx.b, mtx.c, mtx.d, mtx.e, mtx.f
+    )
   }
 
   append(a: number, b: number, c: number, d: number, e: number, f: number): Matrix2D {
@@ -91,11 +98,7 @@ export class Matrix2D {
   rotate(theta: number): Matrix2D {
     const cost = Math.cos(theta);
     const sint = Math.sin(theta);
-    const a = cost;
-    const c = -sint;
-    const b = sint;
-    const d = cost;
-    return this.append(a, b, c, d, 0, 0)
+    return this.append(cost, -sint, sint, cost, 0, 0)
   }
 
   translate(tx: number, ty: number) {
@@ -117,13 +120,12 @@ export class Matrix2D {
     ]
   }
 
-  decompose(tgt?: GeometricProps): GeometricProps {
-    tgt = tgt || {x: 0, y: 0, skewX: 0, skewY: 0, scaleX: 0, scaleY: 0};
+  decompose(tgt: Partial<DisplayProps>): DisplayProps {
     [tgt.x, tgt.y] = this.cross(tgt.x, tgt.y);
     tgt.scaleX = this.a;
     tgt.scaleY = this.d;
     tgt.skewX = this.c;
     tgt.skewY = this.b;
-    return tgt;
+    return tgt as DisplayProps;
   }
 }
